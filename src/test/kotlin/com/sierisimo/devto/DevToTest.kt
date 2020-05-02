@@ -9,25 +9,25 @@ import io.kotest.matchers.ints.shouldBeExactly
 internal class DevToTest : FeatureSpec({
 	feature("DevTo singleton") {
 		scenario("gives a List of Articles") {
-			val articles: List<Article> = DevTo.articles()
+			val articles: List<Article> = articles()
 
 			articles.shouldNotBeEmpty()
 		}
 
 		scenario("can paginate") {
-			val articles: List<Article> = DevTo.articles(page = 2)
+			val articles: List<Article> = articles(page = 2)
 
 			articles.shouldNotBeEmpty()
 		}
 
 		scenario("cannot paginate under 1") {
-			shouldThrow<IllegalArgumentException> { DevTo.articles(page = 0) }
+			shouldThrow<IllegalArgumentException> { articles(page = 0) }
 
-			shouldThrow<IllegalArgumentException> { DevTo.articles(page = -1) }
+			shouldThrow<IllegalArgumentException> { articles(page = -1) }
 		}
 
 		scenario("can limit per page") {
-			val articles: List<Article> = DevTo.articles(limitPerPage = 5)
+			val articles: List<Article> = articles(limitPerPage = 5)
 
 			articles.shouldNotBeEmpty()
 			articles.size shouldBeExactly 5

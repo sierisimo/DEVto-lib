@@ -1,14 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("jvm")
+	kotlin("jvm") //version "1.3.72"
 	id("org.jetbrains.dokka") version "0.10.1"
-
 	`maven-publish`
 }
 
 group = "com.sierisimo"
-version = "0.1.0"
+version = "0.1.2"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -42,21 +41,35 @@ tasks {
 	}
 
 	artifacts {
-		//add("archives", sourcesJar)
 		add("archives", dokkaJar)
 	}
 }
 
 publishing {
-	publications {
-		create<MavenPublication>("default") {
-			from(components["java"])
-			artifact(tasks.getByName("dokkaJar"))
-		}
-	}
 	repositories {
 		maven {
 			url = uri("$buildDir/repository")
+		}
+		/*
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/sierisimo/devto-lib")
+			credentials {
+				username = (project.findProperty("gpr.user") ?: System.getenv("USERNAME") ?: "") as String
+				password = (project.findProperty("gpr.key") ?: System.getenv("TOKEN") ?: "") as String
+			}
+		}
+		 */
+	}
+
+	publications {
+		register<MavenPublication>("gpr") {
+			from(components["java"])
+			//artifact(tasks.getByName("dokkaJar"))
+		}
+		create<MavenPublication>("default") {
+			from(components["java"])
+			artifact(tasks.getByName("dokkaJar"))
 		}
 	}
 }
@@ -64,7 +77,6 @@ publishing {
 repositories {
 	mavenCentral()
 	jcenter()
-	maven(url = "https://dl.bintray.com/arrow-kt/arrow-kt/")
 }
 
 dependencies {

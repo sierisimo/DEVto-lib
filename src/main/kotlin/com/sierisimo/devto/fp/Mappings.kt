@@ -2,8 +2,8 @@ package com.sierisimo.devto.fp
 
 import com.sierisimo.devto.data.Article
 import com.sierisimo.devto.data.ArticleToPublish
-import com.sierisimo.devto.requests.CreateArticle
-import com.sierisimo.devto.requests.CreateArticleRequest
+import com.sierisimo.devto.requests.ArticleRequestInfo
+import com.sierisimo.devto.requests.ArticleRequest
 import com.sierisimo.devto.responses.ArticleResponse
 
 internal fun <I, O> mapList(input: List<I>, mapSingle: (I) -> O): List<O> {
@@ -19,8 +19,8 @@ internal fun mapArticleFromResponse(response: ArticleResponse): Article {
 
 internal fun mapCreateRequestFromToPublish(articleToPublish: ArticleToPublish) =
 	articleToPublish.run {
-		CreateArticleRequest(
-			CreateArticle(
+		ArticleRequest(
+			ArticleRequestInfo(
 				title,
 				body,
 				tags,

@@ -1,6 +1,6 @@
 package com.sierisimo.devto.api
 
-import com.sierisimo.devto.requests.CreateArticleRequest
+import com.sierisimo.devto.requests.ArticleRequest
 import com.sierisimo.devto.responses.ArticleResponse
 import feign.*
 
@@ -10,5 +10,8 @@ internal interface DevToAPI {
 	fun articles(@QueryMap queryParams: Map<String, String>): List<ArticleResponse>
 
 	@RequestLine("POST /articles")
-	fun createArticle(@HeaderMap headers: Map<String, String>, articleRequest: CreateArticleRequest)
+	fun createArticle(@HeaderMap headers: Map<String, String>, articleRequest: ArticleRequest)
+
+	@RequestLine("PUT /articles/{id}")
+	fun updateArticle(@HeaderMap headers: Map<String, String>, @Param("id") id: Int, updateRequest: ArticleRequest)
 }

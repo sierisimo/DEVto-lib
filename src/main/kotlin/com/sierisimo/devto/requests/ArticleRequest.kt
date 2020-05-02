@@ -2,11 +2,9 @@ package com.sierisimo.devto.requests
 
 import com.google.gson.annotations.SerializedName
 
-data class CreateArticleRequest(
-	val article: CreateArticle
-)
+data class ArticleRequest(val article: ArticleRequestInfo)
 
-data class CreateArticle(
+data class ArticleRequestInfo(
 	val title: String,
 	@SerializedName("body_markdown")
 	val bodyMarkdown: String,
@@ -16,6 +14,6 @@ data class CreateArticle(
 	@SerializedName("main_image")
 	val mainImage: String? = null,
 	@SerializedName("canonical_url")
-	val canonincalUrl: String? = null,
+	val canonicalUrl: String? = null,
 	val description: String? = null
 )
