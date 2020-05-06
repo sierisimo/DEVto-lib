@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	kotlin("jvm") //version "1.3.72"
+	//kotlin("kapt") //version "1.3.72"
 	id("org.jetbrains.dokka") version "0.10.1"
 	`maven-publish`
 }
@@ -88,10 +89,17 @@ dependencies {
 
 	implementation("com.squareup.okhttp3", "logging-interceptor", "4.5.0")
 
+	//implementation("com.github.stephanenicolas.toothpick:ktp:3.1.0")
+	//kapt("com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0")
+
+	//highly recommended
+	testImplementation("com.github.stephanenicolas.toothpick:toothpick-testing-junit5:3.1.0")
+
 	testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
 
 	testImplementation("io.kotest:kotest-runner-junit5-jvm:4.0.4")
 	testImplementation("io.kotest:kotest-assertions-core-jvm:4.0.4")
+	testImplementation("io.kotest:kotest-property-jvm:4.0.4")
 
 	testImplementation("io.mockk:mockk:1.10.0")
 }

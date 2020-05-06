@@ -1,5 +1,6 @@
 package com.sierisimo.devto.fp
 
+import com.sierisimo.devto.ArticleInformation
 import com.sierisimo.devto.data.Article
 import com.sierisimo.devto.data.ArticleToPublish
 import com.sierisimo.devto.requests.ArticleRequestInfo
@@ -32,3 +33,18 @@ internal fun mapCreateRequestFromToPublish(articleToPublish: ArticleToPublish) =
 			)
 		)
 	}
+
+internal fun fromInfoToPublish(information: ArticleInformation): ArticleToPublish {
+	return with(information) {
+		ArticleToPublish(
+			title,
+			bodyMarkdown,
+			tags,
+			publish,
+			series ?: "",
+			mainImageUrl ?: "",
+			canonicalUrl ?: "",
+			description ?: ""
+		)
+	}
+}

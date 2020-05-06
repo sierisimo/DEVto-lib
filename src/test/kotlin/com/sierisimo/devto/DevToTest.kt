@@ -1,36 +1,42 @@
 package com.sierisimo.devto
 
-import com.sierisimo.devto.data.Article
+import com.sierisimo.devto.client.repositories.ArticleRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FeatureSpec
-import io.kotest.matchers.collections.shouldNotBeEmpty
-import io.kotest.matchers.ints.shouldBeExactly
+import io.kotest.matchers.shouldBe
+import io.mockk.confirmVerified
+import io.mockk.mockk
+import io.mockk.verify
 
 internal class DevToTest : FeatureSpec({
-	feature("DevTo singleton") {
-		scenario("gives a List of Articles") {
-			val articles: List<Article> = articles()
+    feature("DevTo object") {
+        val devTo = DevTo()
+        scenario("fails when requested to post empty titled article") {
+            shouldThrow<IllegalArgumentException> { devTo.createArticle(articleOf("", "")) }
+        }
 
-			articles.shouldNotBeEmpty()
-		}
+        scenario("fails when requested to post empty body article") {
+            shouldThrow<IllegalArgumentException> { devTo.createArticle(articleOf("", "")) }
+        }
 
-		scenario("can paginate") {
-			val articles: List<Article> = articles(page = 2)
+        scenario("fails when requested to post article BUT apikey is empty") {
+            val exception = shouldThrow<IllegalArgumentException> {
+                devTo.createArticle(articleOf("Test", "Body"))
+            }
 
-			articles.shouldNotBeEmpty()
-		}
+            exception.message shouldBe "apikey cannot be blank for this operation. Create a new instance with a valid apikey"
+        }
 
-		scenario("cannot paginate under 1") {
-			shouldThrow<IllegalArgumentException> { articles(page = 0) }
+        scenario("calls a repository with the right data") {
+            val repositoryMock = mockk<ArticleRepository>(relaxed = true)
+            val devToInternal = DevTo("123", repositoryMock)
+            devToInternal.createArticle(articleOf("Title", "Body"))
 
-			shouldThrow<IllegalArgumentException> { articles(page = -1) }
-		}
+            verify(exactly = 1) {
+                repositoryMock.createArticle(eq("123"), eq(articleOf("Title", "Body")))
+            }
 
-		scenario("can limit per page") {
-			val articles: List<Article> = articles(limitPerPage = 5)
-
-			articles.shouldNotBeEmpty()
-			articles.size shouldBeExactly 5
-		}
-	}
+            confirmVerified(repositoryMock)
+        }
+    }
 })
