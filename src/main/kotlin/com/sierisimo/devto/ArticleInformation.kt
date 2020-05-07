@@ -11,8 +11,11 @@ data class ArticleInformation(
     val description: String? = null
 )
 
-internal fun ArticleInformation.requireValidTitle() = require(title.isNotBlank())
-internal fun ArticleInformation.requireValidBody() = require(bodyMarkdown.isNotBlank())
+internal fun ArticleInformation.requireValidTitle() =
+    require(title.isNotBlank()) { "Title cannot be blank or empty for a new article" }
+
+internal fun ArticleInformation.requireValidBody() =
+    require(bodyMarkdown.isNotBlank()) { "Creation of article requires a body in markdown text" }
 
 fun articleOf(title: String, markdown: String, tags: List<String> = emptyList()): ArticleInformation {
     require(title.isNotBlank())
