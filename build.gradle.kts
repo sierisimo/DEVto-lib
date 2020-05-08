@@ -1,8 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("jvm") //version "1.3.72"
-	//kotlin("kapt") //version "1.3.72"
+	kotlin("jvm") version "1.3.72"
 	id("org.jetbrains.dokka") version "0.10.1"
 	`maven-publish`
 }
@@ -48,10 +47,8 @@ tasks {
 
 publishing {
 	repositories {
-		maven {
-			url = uri("$buildDir/repository")
-		}
-		/*
+		maven { url = uri("$buildDir/repository") }
+
 		maven {
 			name = "GitHubPackages"
 			url = uri("https://maven.pkg.github.com/sierisimo/devto-lib")
@@ -60,7 +57,7 @@ publishing {
 				password = (project.findProperty("gpr.key") ?: System.getenv("TOKEN") ?: "") as String
 			}
 		}
-		 */
+
 	}
 
 	publications {
@@ -88,9 +85,6 @@ dependencies {
 	implementation("io.github.openfeign", "feign-slf4j", "11.0")
 
 	implementation("com.squareup.okhttp3", "logging-interceptor", "4.5.0")
-
-	//implementation("com.github.stephanenicolas.toothpick:ktp:3.1.0")
-	//kapt("com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0")
 
 	//highly recommended
 	testImplementation("com.github.stephanenicolas.toothpick:toothpick-testing-junit5:3.1.0")
