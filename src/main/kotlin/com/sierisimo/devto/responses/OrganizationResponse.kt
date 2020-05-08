@@ -8,6 +8,7 @@ data class OrganizationResponse(
 	val slug: String,
 	@SerializedName("profile_image")
 	val profileImage: String,
-	@SerializedName("profile_image_90" )
+	@SerializedName("profile_image_90")
 	val profileImage90: String?
 )
+

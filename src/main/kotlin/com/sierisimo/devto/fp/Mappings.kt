@@ -1,50 +1,65 @@
 package com.sierisimo.devto.fp
 
-import com.sierisimo.devto.ArticleInformation
-import com.sierisimo.devto.data.Article
-import com.sierisimo.devto.data.ArticleToPublish
-import com.sierisimo.devto.requests.ArticleRequestInfo
+import com.sierisimo.devto.data.ArticleInformation
+import com.sierisimo.devto.data.ArticlePublished
+import com.sierisimo.devto.data.Organization
+import com.sierisimo.devto.data.User
 import com.sierisimo.devto.requests.ArticleRequest
-import com.sierisimo.devto.responses.ArticleResponse
+import com.sierisimo.devto.requests.ArticleRequestInfo
+import com.sierisimo.devto.responses.ArticlePublishedResponse
+import com.sierisimo.devto.responses.OrganizationResponse
+import com.sierisimo.devto.responses.UserResponse
 
-internal fun <I, O> mapList(input: List<I>, mapSingle: (I) -> O): List<O> {
-	return input.map { mapSingle(it) }
+internal fun mapInfoToRequest(articleInformation: ArticleInformation) = with(articleInformation) {
+    ArticleRequest(
+        ArticleRequestInfo(
+            title,
+            bodyMarkdown,
+            tags,
+            publish,
+            series,
+            mainImageUrl,
+            canonicalUrl,
+            description
+        )
+    )
 }
 
-internal fun mapArticleFromResponse(response: ArticleResponse): Article {
-	return Article(
-		response.id,
-		response.title
-	)
+internal fun mapResponseToPublished(publishedResponse: ArticlePublishedResponse) = with(publishedResponse) {
+    ArticlePublished(
+        typeOf,
+        id,
+        title,
+        description ?: "",
+        coverImage ?: "",
+        readablePublishDate ?: "",
+        socialImage,
+        tagList,
+        tags,
+        slug,
+        path,
+        url,
+        canonicalUrl ?: "",
+        commentsCount,
+        positiveReactionsCount,
+        collectionId ?: -1,
+        createdAt,
+        editedAt ?: "",
+        crosspostedAt ?: "",
+        publishedAt ?: "",
+        lastCommentAt ?: "",
+        publishedTimestamp,
+        bodyHtml,
+        bodyMarkdown,
+        mapUserResponse(user),
+        mapOrganizationResponse(organization)
+    )
 }
 
-internal fun mapCreateRequestFromToPublish(articleToPublish: ArticleToPublish) =
-	articleToPublish.run {
-		ArticleRequest(
-			ArticleRequestInfo(
-				title,
-				body,
-				tags,
-				publish,
-				series,
-				mainImage,
-				url,
-				description
-			)
-		)
-	}
+internal fun mapUserResponse(response: UserResponse) = with(response) {
+    User(name, username, twitterUsername, githubUsername, websiteUrl, profileImage, profileImage90)
+}
 
-internal fun fromInfoToPublish(information: ArticleInformation): ArticleToPublish {
-	return with(information) {
-		ArticleToPublish(
-			title,
-			bodyMarkdown,
-			tags,
-			publish,
-			series ?: "",
-			mainImageUrl ?: "",
-			canonicalUrl ?: "",
-			description ?: ""
-		)
-	}
+internal fun mapOrganizationResponse(response: OrganizationResponse?) = response?.let {
+    Organization(it.name, it.username, it.slug, it.profileImage, it.profileImage90)
 }

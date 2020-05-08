@@ -1,5 +1,9 @@
 package com.sierisimo.devto
 
+import com.sierisimo.devto.data.ArticleInformation
+import com.sierisimo.devto.data.articleOf
+import com.sierisimo.devto.data.requireValidBody
+import com.sierisimo.devto.data.requireValidTitle
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.spec.style.ShouldSpec
@@ -36,7 +40,14 @@ internal class ArticleOfTest : ShouldSpec({
             Arb.string(minSize = 1).filter { it.isNotBlank() },
             Arb.list(Arb.string())
         ) { title, desc, tagList ->
-            articleOf(title, desc, tagList) == ArticleInformation(title, desc, tagList.filter { it.isNotBlank() })
+            articleOf(
+                title,
+                desc,
+                tagList
+            ) == ArticleInformation(
+                title,
+                desc,
+                tagList.filter { it.isNotBlank() })
         }
     }
 })
@@ -44,14 +55,17 @@ internal class ArticleOfTest : ShouldSpec({
 internal class ArticleInformationTest : FunSpec({
     context("The ArticleInformation") {
         test("fails validation when title is empty") {
-            val article = ArticleInformation("", Arb.string().single(), emptyList())
+            val article =
+                ArticleInformation("", Arb.string().single(), emptyList())
             val exception = shouldThrow<IllegalArgumentException> { article.requireValidTitle() }
 
             exception.message shouldBe "Title cannot be blank or empty for a new article"
         }
         test("fail validation when body is empty") {
             val article =
-                ArticleInformation(Arb.string(minSize = 1).filter { it.isNotBlank() }.single(), "", emptyList())
+                ArticleInformation(
+                    Arb.string(minSize = 1).filter { it.isNotBlank() }.single(), "", emptyList()
+                )
             val exception = shouldThrow<IllegalArgumentException> { article.requireValidBody() }
             exception.message shouldBe "Creation of article requires a body in markdown text"
         }
