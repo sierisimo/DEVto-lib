@@ -1,8 +1,8 @@
 package com.sierisimo.devto.client.repositories
 
 import com.sierisimo.devto.api.DevToAPI
-import com.sierisimo.devto.fp.mapInfoToRequest
-import com.sierisimo.devto.fp.mapResponseToPublished
+import com.sierisimo.devto.data.mapInfoToRequest
+import com.sierisimo.devto.data.mapResponseToPublished
 import com.sierisimo.devto.requests.ArticleRequest
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.matchers.ints.shouldBeGreaterThan

@@ -37,7 +37,7 @@ data class ArticlePublishedResponse(
     val crosspostedAt: String?,
     @SerializedName("published_at")
     val publishedAt: String?,
-    @SerializedName("lastComment_at")
+    @SerializedName("last_comment_at")
     val lastCommentAt: String?,
     @SerializedName("published_timestamp")
     val publishedTimestamp: String,

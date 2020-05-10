@@ -25,7 +25,7 @@ open class Article(
         description: String? = null
     ) : Article(title, bodyMarkdown, tags, publish, series, mainImageUrl, canonicalUrl, description)
 
-    class Content(
+    class Published(
         val typeOf: String,
         val id: Int,
         val coverImage: String,

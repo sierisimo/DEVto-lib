@@ -15,7 +15,7 @@ import io.mockk.mockk
 import io.mockk.verify
 
 internal class DevToTest : FeatureSpec({
-    feature("DevTo object") {
+    feature("DevTo instance when posting an article") {
         val devTo = DevTo()
         scenario("fails when requested to post empty titled article") {
             shouldThrow<IllegalArgumentException> {
@@ -84,6 +84,16 @@ internal class DevToTest : FeatureSpec({
             verify { repositoryMock.createArticle(any(), any()) }
 
             confirmVerified(repositoryMock)
+        }
+    }
+
+    feature("DevTo instance when requesting an article by id") {
+        val devTo = DevTo("", mockk(relaxed = true))
+        scenario("fail if the apikey is not provided") {
+            val exception = shouldThrow<IllegalArgumentException> {
+                devTo.getArticleById(1.toUInt())
+            }
+            exception.message shouldBe "apikey cannot be blank for this operation. Create a new instance with a valid apikey"
         }
     }
 })

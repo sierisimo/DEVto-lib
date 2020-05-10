@@ -12,24 +12,42 @@ internal constructor(
     private val apikey: String,
     private val articleRepository: ArticleRepository
 ) {
-
+    @JvmOverloads
     constructor(apiKey: String = "") : this(apiKey, buildRepository())
 
     /**
      * Create a new article in Dev.to
      *
-     * This will make a POST call.
+     * This will make a POST call for the DevTo API with the information provided in [ArticleInformation]
+     *
+     * @param articleInformation An object that represents the information to publish a new article.
+     *
+     * @return the created [ArticlePublished] or throws a [com.sierisimo.devto.client.DevToCallException]
+     *
+     * @throws [com.sierisimo.devto.client.DevToCallException] in case of a non 2XX response from DevTo API
+     * with the error returned by the API.
      */
     fun createArticle(articleInformation: ArticleInformation): ArticlePublished {
-        commonValidations(articleInformation)
+        commonInformationValidations(articleInformation)
 
         return articleRepository.createArticle(apikey, articleInformation)
     }
 
-    private fun commonValidations(articleInformation: ArticleInformation) {
+    @ExperimentalUnsignedTypes
+    fun getArticleById(articleId: UInt): ArticlePublished {
+        commonValidations()
+
+        return articleRepository.getById(articleId)
+    }
+
+    private fun commonValidations() {
         require(apikey.isNotBlank()) {
             "apikey cannot be blank for this operation. Create a new instance with a valid apikey"
         }
+    }
+
+    private fun commonInformationValidations(articleInformation: ArticleInformation) {
+        commonValidations()
 
         articleInformation.requireValidTitle()
         articleInformation.requireValidBody()

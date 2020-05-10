@@ -1,9 +1,5 @@
-package com.sierisimo.devto.fp
+package com.sierisimo.devto.data
 
-import com.sierisimo.devto.data.ArticleInformation
-import com.sierisimo.devto.data.ArticlePublished
-import com.sierisimo.devto.data.Organization
-import com.sierisimo.devto.data.User
 import com.sierisimo.devto.requests.ArticleRequest
 import com.sierisimo.devto.requests.ArticleRequestInfo
 import com.sierisimo.devto.responses.ArticlePublishedResponse
